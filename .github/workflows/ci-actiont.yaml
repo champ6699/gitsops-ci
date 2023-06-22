@@ -74,7 +74,7 @@ jobs:
             champ168/reactapp-ci:${{ github.sha }} 
             ghcr.io/champ168/reactapp-ci:${{ github.sha }}
           # build on feature branches, push only on main branch
-          push: ${{ github.ref == 'refs/heads/master' }}
+          push: ${{ github.ref == 'refs/heads/main' }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -86,14 +86,14 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: champ6699/gitops-infa
-          ref: "master"
+          ref: "main"
           token: ${{ secrets.G_TOKEN }}
       - name: setup git config
         run: |
           git config --global user.email "champ@cc.cc"
           git config --global user.name "champ6699"
           echo ${{ github.sha }}
-          sed -i "s#${{ github.actor }}.*#${{ github.actor }}/gitops01:${{ github.sha }}#g" deployment.yaml
+          sed -i "s#${{ github.actor }}.*#${{ github.actor }}/reactapp-ci:${{ github.sha }}#g" deployment.yaml
           git add -A
           git commit -am "Update image for - ${{ github.sha }}"
       - run: echo ${{ github }}
